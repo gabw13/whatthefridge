@@ -1,7 +1,7 @@
 import "./App.css";
 import UserForm from "./components/UserForm";
 import { useState, useEffect } from "react";
-import { db } from "./firebase";
+import { db } from "./firebase.config";
 import { collection, getDocs } from "firebase/firestore";
 
 function App() {
