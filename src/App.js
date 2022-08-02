@@ -1,5 +1,5 @@
 import "./App.css";
-import User from "./components/User";
+import UserForm from "./components/UserForm";
 import { useState, useEffect } from "react";
 import { db } from "./firebase";
 import { collection, getDocs } from "firebase/firestore";
@@ -11,14 +11,14 @@ function App() {
   useEffect(() => {
     // async api call to db
     const getUsers = async () => {
-      const data = await getDocs(usersCollection);
+      const userData = await getDocs(usersCollection);
       // loop through docs in collection and set users array to be equal to array of doc data and id for each doc
-      console.log(data.docs);
-      setUsers(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+      console.log(userData.docs);
+      setUsers(userData.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
     };
 
     getUsers();
-  }, []);
+  }, [usersCollection]);
 
   return (
     <div className="App">
@@ -26,8 +26,8 @@ function App() {
         <h1>what the fridge?!</h1>
       </header>
       <main>
-        <h2>Enter your name below to get started!</h2>
-        <User></User>
+        <h2>Enter your name below to get cookin'!</h2>
+        <UserForm usersCollection={usersCollection} />
         <h3>Users:</h3>
         {users.name}
         {users.map((user) => {
@@ -39,7 +39,7 @@ function App() {
           );
         })}
       </main>
-      <footer>&copy; 2022 &hearts;</footer>
+      <footer className="App-footer">&copy; 2022 &hearts;</footer>
     </div>
   );
 }
