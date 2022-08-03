@@ -14,11 +14,11 @@ import {
 function App() {
   const [users, setUsers] = useState([]);
   const usersCollection = collection(db, "users");
+  const [newUser, setNewUser] = useState("");
 
   // const kitchenCollection = doc(db, "users/kitchen");
 
-  const [newUser, setNewUser] = useState("");
-
+  // async api call to db: CREATE user
   const createUser = async () => {
     await addDoc(usersCollection, { username: newUser });
   };
@@ -50,34 +50,21 @@ function App() {
       setUsers(userData.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
     };
 
-    getUsers();
+    // getUsers();
     // eslint-disable-next-line
   }, []);
   // do NOT uncomment the line below. This is here as a reminder that putting something in the deps array will cause reads to skyrocket.
   // }, [usersCollection]);
 
   return (
-    <div className="App">
+    <section className="App">
       <header className="App-header">
         <h1>what the fridge?!</h1>
       </header>
-      <main>
-        <section>
-          <h2>Enter your name below to get cookin'!</h2>
-          <input
-            type="text"
-            name="username"
-            onChange={(event) => {
-              setNewUser(event.target.value);
-            }}
-          ></input>
-          <button type="submit" onClick={createUser}>
-            submit
-          </button>
 
-          {/* <UserForm usersCollection={usersCollection} /> */}
-        </section>
-        <h3>Users:</h3>
+      <section className="user-return">
+        <h2>Have you been here before?</h2>
+        <h3>Select a name from the list of users below:</h3>
         {users.name}
         {users.map((user) => {
           return (
@@ -87,9 +74,27 @@ function App() {
             </section>
           );
         })}
-      </main>
+      </section>
+
+      <section className="user-new">
+        <h2>Are you new here?</h2>
+        <h3>Welcome! Let's get cookin'!</h3>
+        <h4>Enter your name below:</h4>
+        <input
+          type="text"
+          name="username"
+          onChange={(event) => {
+            setNewUser(event.target.value);
+          }}
+        ></input>
+        <button type="submit" onClick={createUser}>
+          submit
+        </button>
+        {/* <UserForm usersCollection={usersCollection} /> */}
+      </section>
+
       <footer className="App-footer">&copy; 2022 &hearts;</footer>
-    </div>
+    </section>
   );
 }
 
