@@ -8,18 +8,25 @@ const UserForm = (props) => {
     await addDoc(props.usersCollection, { username: newUser });
   };
 
+  const updateInput = (event) => {
+    setNewUser(event.target.value);
+  };
+
+  // const updateInput = (event) => {
+  //   setNewUser(event.target.value);
+  // };
+
+  // return (
+  //   <form onSubmit={createUser}>
+  //     <input type="text" name="username" onChange={updateInput} />
+  //     <button type="submit">submit</button>
+  //   </form>
+  // );
+
   return (
-    <form>
-      <input
-        type="text"
-        name="username"
-        onChange={(event) => {
-          setNewUser(event.target.value);
-        }}
-      />
-      <button type="submit" onSubmit={createUser}>
-        submit
-      </button>
+    <form onSubmit={createUser}>
+      <input type="text" name="username" onChange={updateInput} />
+      <button type="submit">submit</button>
     </form>
   );
 };
