@@ -4,11 +4,11 @@ import { useState, useEffect } from "react";
 import { db } from "./firebase.config";
 import {
   collection,
-  // doc,
+  doc,
   getDocs,
   // setDoc,
   addDoc,
-  // enableIndexedDbPersistence,
+  deleteDoc,
 } from "firebase/firestore";
 
 function App() {
@@ -21,6 +21,12 @@ function App() {
   // async api call to db: CREATE user
   const createUser = async () => {
     await addDoc(usersCollection, { username: newUser });
+  };
+
+  // async api call to db: DELETE user
+  const deleteUser = async (id) => {
+    const userDoc = doc(db, "users", id);
+    await deleteDoc(userDoc);
   };
 
   useEffect(() => {
@@ -71,6 +77,13 @@ function App() {
             <section>
               {" "}
               <p>{user.username}</p>
+              <button
+                onClick={() => {
+                  deleteUser(user.id);
+                }}
+              >
+                delete {user.username}
+              </button>
             </section>
           );
         })}
