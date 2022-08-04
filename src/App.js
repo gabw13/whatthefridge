@@ -21,12 +21,23 @@ function App() {
   // async api call to db: CREATE user
   const createUser = async () => {
     await addDoc(usersCollection, { username: newUser });
+    getUsers();
   };
 
   // async api call to db: DELETE user
   const deleteUser = async (id) => {
     const userDoc = doc(db, "users", id);
     await deleteDoc(userDoc);
+    getUsers();
+  };
+
+  // async api call to db: GET users
+  const getUsers = async () => {
+    const userData = await getDocs(usersCollection);
+    // firestore.collection("yourCollection").get({source:"cache"})
+    // loop through docs in collection and set users array to be equal to array of doc data and id for each doc
+    console.log(userData.docs);
+    setUsers(userData.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
   };
 
   useEffect(() => {
@@ -47,16 +58,7 @@ function App() {
     // }
     // writeIngredients();
 
-    // async api call to db: GET users
-    const getUsers = async () => {
-      const userData = await getDocs(usersCollection);
-      // firestore.collection("yourCollection").get({source:"cache"})
-      // loop through docs in collection and set users array to be equal to array of doc data and id for each doc
-      console.log(userData.docs);
-      setUsers(userData.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-    };
-
-    // getUsers();
+    getUsers();
     // eslint-disable-next-line
   }, []);
   // do NOT uncomment the line below. This is here as a reminder that putting something in the deps array will cause reads to skyrocket.
