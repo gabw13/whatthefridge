@@ -9,14 +9,14 @@ import {
   // setDoc,
   addDoc,
   deleteDoc,
+  // docSnap,
 } from "firebase/firestore";
 
 function App() {
   const [users, setUsers] = useState([]);
   const usersCollection = collection(db, "users");
   const [newUser, setNewUser] = useState("");
-
-  // const kitchenCollection = doc(db, "users/kitchen");
+  const [ingredients, setIngredients] = useState([]);
 
   // async api call to db: CREATE user
   const createUser = async () => {
@@ -34,10 +34,23 @@ function App() {
   // async api call to db: GET users
   const getUsers = async () => {
     const userData = await getDocs(usersCollection);
-    // firestore.collection("yourCollection").get({source:"cache"})
     // loop through docs in collection and set users array to be equal to array of doc data and id for each doc
-    console.log(userData.docs);
     setUsers(userData.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+  };
+
+  // async api call to db: GET ingredients
+  const getIngredients = async (user) => {
+    const kitchenCollection = collection(db, `users/${user.id}/kitchen`);
+    const ingredientData = await getDocs(kitchenCollection);
+
+    // loop through docs in collection and set ingredients array to be equal to array of doc data and id for each doc
+    setIngredients(
+      ingredientData.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }))
+    );
+    console.log(ingredientData);
   };
 
   useEffect(() => {
@@ -57,8 +70,8 @@ function App() {
     //   // updateDoc() will only overwrite fields specified while keeping old data in place but throws error
     // }
     // writeIngredients();
-
     getUsers();
+
     // eslint-disable-next-line
   }, []);
   // do NOT uncomment the line below. This is here as a reminder that putting something in the deps array will cause reads to skyrocket.
@@ -73,19 +86,39 @@ function App() {
       <section className="user-return">
         <h2>Have you been here before?</h2>
         <h3>Select a name from the list of users below:</h3>
-        {users.name}
         {users.map((user) => {
           return (
             <section>
               {" "}
               <p>{user.username}</p>
-              <button
-                onClick={() => {
-                  deleteUser(user.id);
-                }}
-              >
-                delete {user.username}
-              </button>
+              <section>
+                <button
+                  onClick={() => {
+                    getIngredients(user);
+                  }}
+                >
+                  see {user.username}'s kitchen
+                </button>
+                <button
+                  onClick={() => {
+                    deleteUser(user.id);
+                  }}
+                >
+                  delete {user.username}
+                </button>
+              </section>
+            </section>
+          );
+        })}
+      </section>
+
+      <section className="user-kitchen">
+        <h2>kitchen</h2>
+        {ingredients.map((ingredient) => {
+          return (
+            <section>
+              <p>{ingredient.name}</p>
+              <p>{ingredient.quantity}</p>
             </section>
           );
         })}

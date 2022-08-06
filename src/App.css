@@ -41,3 +41,11 @@
   grid-row: 3 / 5;
   border-radius: 18px;
 }
+
+.user-kitchen {
+  margin: 2px;
+  background-color: #90caf0cf;
+  grid-column: 2 / 6;;
+  grid-row: 5 / 7;
+  border-radius: 18px;
+}
