@@ -74,9 +74,6 @@ function App() {
     // console.log(event);
     setCurrentUser(event.target.value);
     console.log(event.target.value);
-    // console.log(currentUser);
-    // createIngredients(currentUser);
-    // getIngredients();
   };
 
   const createIngredients = async () => {
@@ -87,17 +84,18 @@ function App() {
     getIngredients();
   };
 
-  const increaseIngredients = async (userID, ingredient) => {
-    // const userDoc = doc(db, `users/${user.id}/kitchen/${ingredient.id}`);
-    const userDoc = doc(db, `users/userID/kitchen/ingredientID`);
+  const increaseIngredients = async (ingredient) => {
+    const userDoc = doc(db, `users/${currentUser}/kitchen/${ingredient.id}`);
     const newFields = { quantity: ingredient.quantity + 1 };
     await updateDoc(userDoc, newFields);
+    getIngredients();
   };
 
-  const decreaseIngredients = async (id, quantity) => {
-    const userDoc = doc(db, "kitchen", id);
-    const newFields = { quantity: quantity - 1 };
+  const decreaseIngredients = async (ingredient) => {
+    const userDoc = doc(db, `users/${currentUser}/kitchen/${ingredient.id}`);
+    const newFields = { quantity: ingredient.quantity - 1 };
     await updateDoc(userDoc, newFields);
+    getIngredients();
   };
 
   useEffect(() => {
@@ -166,7 +164,6 @@ function App() {
 
       <section className="user-kitchen">
         <h2>Kitchen</h2>
-        {/* {users.map((ingredient) => { */}
         {ingredients?.map((ingredient) => {
           return (
             <section>
@@ -175,9 +172,8 @@ function App() {
               </li>
               <button
                 className="increase-button"
-                // onClick={console.log(ingredient.quantity)}
                 onClick={() => {
-                  increaseIngredients(ingredient.id, ingredient.quantity);
+                  increaseIngredients(ingredient);
                 }}
               >
                 ⬆
@@ -187,16 +183,15 @@ function App() {
               <button
                 className="decrease-button"
                 onClick={() => {
-                  decreaseIngredients(ingredient.id, ingredient.quantity);
+                  decreaseIngredients(ingredient);
                 }}
               >
                 ⬇
               </button>
-              <p>~~~</p>
+              <p>______</p>
             </section>
           );
         })}
-        {/* <button>add ingredients to kitchen</button> */}
       </section>
 
       <section className="kitchen-form">
