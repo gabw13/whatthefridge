@@ -9,14 +9,28 @@ import {
   // setDoc,
   addDoc,
   deleteDoc,
+  updateDoc,
   // docSnap,
 } from "firebase/firestore";
+import NewUserForm from "./components/NewUserForm";
 
 function App() {
   const [users, setUsers] = useState([]);
-  const usersCollection = collection(db, "users");
   const [newUser, setNewUser] = useState("");
+  const [currentUser, setCurrentUser] = useState([]);
+
   const [ingredients, setIngredients] = useState([]);
+  const [newIngredientsName, setNewIngredientsName] = useState([]);
+  const [newIngredientsQuantity, setNewIngredientsQuantity] = useState([]);
+
+  const usersCollection = collection(db, "users");
+
+  // const kitchenCollection = collection(db, `users/${user.id}/kitchen`);
+
+  // helper function to get a user's doc
+  // function getUserSpecificDoc(user) {
+  //   return doc(db, `users/${user.id}`);
+  // }
 
   // async api call to db: CREATE user
   const createUser = async () => {
@@ -39,9 +53,12 @@ function App() {
   };
 
   // async api call to db: GET ingredients
-  const getIngredients = async (user) => {
-    const kitchenCollection = collection(db, `users/${user.id}/kitchen`);
-    const ingredientData = await getDocs(kitchenCollection);
+  const getIngredients = async () => {
+    // getUserSpecificDoc(user);
+    // collection(db, `users/${user.id}/kitchen`);
+    const ingredientData = await getDocs(
+      collection(db, `users/${currentUser}/kitchen`)
+    );
 
     // loop through docs in collection and set ingredients array to be equal to array of doc data and id for each doc
     setIngredients(
@@ -50,32 +67,50 @@ function App() {
         id: doc.id,
       }))
     );
-    console.log(ingredientData);
+    // console.log(ingredientData);
+  };
+
+  const handleUserChange = (event) => {
+    // console.log(event);
+    setCurrentUser(event.target.value);
+    console.log(event.target.value);
+    // console.log(currentUser);
+    // createIngredients(currentUser);
+    // getIngredients();
+  };
+
+  const createIngredients = async () => {
+    await addDoc(collection(db, `users/${currentUser}/kitchen`), {
+      name: newIngredientsName,
+      quantity: Number(newIngredientsQuantity),
+    });
+    getIngredients();
+  };
+
+  const increaseIngredients = async (userID, ingredient) => {
+    // const userDoc = doc(db, `users/${user.id}/kitchen/${ingredient.id}`);
+    const userDoc = doc(db, `users/userID/kitchen/ingredientID`);
+    const newFields = { quantity: ingredient.quantity + 1 };
+    await updateDoc(userDoc, newFields);
+  };
+
+  const decreaseIngredients = async (id, quantity) => {
+    const userDoc = doc(db, "kitchen", id);
+    const newFields = { quantity: quantity - 1 };
+    await updateDoc(userDoc, newFields);
   };
 
   useEffect(() => {
-    // async api call to db: CREATE ingredients
-    // async function writeIngredients() {
-    //   const docData = {
-    //     item: "apple",
-    //     quantity: 1,
-    //   };
-    //   try {
-    //     await addDoc(kitchenCollection, docData);
-    //     console.log("Value has been written to db");
-    //   } catch (error) {
-    //     console.log(error);
-    //   }
-    //   // setDoc() writes the doc if it doesn't exist and will completely replace any doc that exists at this location
-    //   // updateDoc() will only overwrite fields specified while keeping old data in place but throws error
-    // }
-    // writeIngredients();
     getUsers();
 
     // eslint-disable-next-line
   }, []);
   // do NOT uncomment the line below. This is here as a reminder that putting something in the deps array will cause reads to skyrocket.
   // }, [usersCollection]);
+  useEffect(() => {
+    getIngredients();
+    // eslint-disable-next-line
+  }, [currentUser]);
 
   return (
     <section className="App">
@@ -86,11 +121,28 @@ function App() {
       <section className="user-return">
         <h2>Have you been here before?</h2>
         <h3>Select a name from the list of users below:</h3>
-        {users.map((user) => {
+        <div className="select-container">
+          <label>
+            Select a username:
+            <select
+              onChange={(event) => {
+                handleUserChange(event);
+              }}
+            >
+              {users.map((user) => (
+                <option value={user.id}>{user.username}</option>
+              ))}
+            </select>
+          </label>
+        </div>
+
+        {/* {users.map((user) => {
           return (
             <section>
               {" "}
-              <p>{user.username}</p>
+              <br></br>
+              <li>{user.username}</li>
+              <br></br>
               <section>
                 <button
                   onClick={() => {
@@ -109,39 +161,80 @@ function App() {
               </section>
             </section>
           );
-        })}
+        })} */}
       </section>
 
       <section className="user-kitchen">
-        <h2>kitchen</h2>
-        {ingredients.map((ingredient) => {
+        <h2>Kitchen</h2>
+        {/* {users.map((ingredient) => { */}
+        {ingredients?.map((ingredient) => {
           return (
             <section>
-              <p>{ingredient.name}</p>
+              <li>
+                <h3>{ingredient.name}</h3>
+              </li>
+              <button
+                className="increase-button"
+                // onClick={console.log(ingredient.quantity)}
+                onClick={() => {
+                  increaseIngredients(ingredient.id, ingredient.quantity);
+                }}
+              >
+                ⬆
+              </button>
               <p>{ingredient.quantity}</p>
+              <p>{ingredient.unit}</p>
+              <button
+                className="decrease-button"
+                onClick={() => {
+                  decreaseIngredients(ingredient.id, ingredient.quantity);
+                }}
+              >
+                ⬇
+              </button>
+              <p>~~~</p>
             </section>
           );
         })}
+        {/* <button>add ingredients to kitchen</button> */}
       </section>
 
-      <section className="user-new">
-        <h2>Are you new here?</h2>
-        <h3>Welcome! Let's get cookin'!</h3>
-        <h4>Enter your name below:</h4>
-        <input
-          type="text"
-          name="username"
-          onChange={(event) => {
-            setNewUser(event.target.value);
-          }}
-        ></input>
-        <button type="submit" onClick={createUser}>
+      <section className="kitchen-form">
+        <h2>add ingredients to kitchen:</h2>
+        <section></section>
+        <label>
+          Ingredient name:
+          <input
+            type="text"
+            name="name"
+            onChange={(event) => {
+              setNewIngredientsName(event.target.value);
+            }}
+          ></input>
+        </label>
+        <br></br>
+        <label>
+          Ingredient quantity:
+          <input
+            type="text"
+            name="quantity"
+            onChange={(event) => {
+              setNewIngredientsQuantity(event.target.value);
+            }}
+          ></input>
+        </label>
+        <br></br>
+        <button type="submit" onClick={createIngredients}>
           submit
         </button>
-        {/* <UserForm usersCollection={usersCollection} /> */}
       </section>
 
-      <footer className="App-footer">&copy; 2022 &hearts;</footer>
+      <NewUserForm createUser={createUser} getUsers={getUsers} />
+
+      <footer className="App-footer">
+        <p>made with ReactJS + Google Firebase + &hearts;</p>
+        <p>&copy; 2022 Gaby Webb </p>
+      </footer>
     </section>
   );
 }
