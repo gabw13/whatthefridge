@@ -1,37 +1,38 @@
-import React, { useState, addDoc } from "react";
-// import firestore from "./firestore";
+import React, { useState } from "react";
+import { addDoc, collection } from "firebase/firestore";
 
 const NewUserForm = (props) => {
   const [newUser, setNewUser] = useState("");
 
-  const onFormSubmit = (event) => {
-    event.preventDefault();
-    props.getUsers();
+  // event handler that updates the state of the new user as the user types the name into the form
+  const onFormChange = (event) => {
+    const inputValue = event.target.value;
+    setNewUser(inputValue);
   };
 
-  const onFormChange = (event) => {
-    const stateName = event.target.name;
-    const inputValue = event.target.value;
-    setNewUser(event.target.value);
+  // submit handler that sends the item to the createUser function when the user clicks submit
+  const onFormSubmit = (event) => {
+    event.preventDefault();
+    createUser();
+  };
 
-    const newUserData = { ...newUser };
-    newUserData[stateName] = inputValue;
+  // async api call to db: CREATE user
+  const createUser = async () => {
+    await addDoc(collection(props.db, "users"), { username: newUser });
+    props.getUsers();
   };
 
   return (
     <section className="user-new">
       <h2>Are you new here?</h2>
       <h3>Welcome!</h3>
-      <h4>Enter your name below:</h4>
 
       <form onSubmit={onFormSubmit}>
         <label htmlFor="username">
-          Username:
+          Enter your username:
           <input type="text" name="username" onChange={onFormChange}></input>
         </label>
-        <button type="submit" onClick={props.createUser}>
-          submit
-        </button>
+        <button>submit</button>
         <h4>Let's get cookin'!</h4>
       </form>
     </section>

@@ -1,22 +1,18 @@
 import "./App.css";
-// import UserForm from "./components/UserForm";
+import NewUserForm from "./components/NewUserForm";
 import { useState, useEffect } from "react";
 import { db } from "./firebase.config";
 import {
   collection,
   doc,
   getDocs,
-  // setDoc,
   addDoc,
   deleteDoc,
   updateDoc,
-  // docSnap,
 } from "firebase/firestore";
-import NewUserForm from "./components/NewUserForm";
 
 function App() {
   const [users, setUsers] = useState([]);
-  const [newUser, setNewUser] = useState("");
   const [currentUser, setCurrentUser] = useState([]);
 
   const [ingredients, setIngredients] = useState([]);
@@ -25,17 +21,9 @@ function App() {
 
   const usersCollection = collection(db, "users");
 
-  // const kitchenCollection = collection(db, `users/${user.id}/kitchen`);
-
-  // helper function to get a user's doc
-  // function getUserSpecificDoc(user) {
-  //   return doc(db, `users/${user.id}`);
-  // }
-
-  // async api call to db: CREATE user
-  const createUser = async () => {
-    await addDoc(usersCollection, { username: newUser });
-    getUsers();
+  // event handler that updates current user state when a different user is clicked on the user drop down menu
+  const handleUserChange = (event) => {
+    setCurrentUser(event.target.value);
   };
 
   // async api call to db: DELETE user
@@ -45,17 +33,15 @@ function App() {
     getUsers();
   };
 
-  // async api call to db: GET users
+  // async api call to db: READ users
   const getUsers = async () => {
     const userData = await getDocs(usersCollection);
     // loop through docs in collection and set users array to be equal to array of doc data and id for each doc
     setUsers(userData.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
   };
 
-  // async api call to db: GET ingredients
+  // async api call to db: READ ingredients
   const getIngredients = async () => {
-    // getUserSpecificDoc(user);
-    // collection(db, `users/${user.id}/kitchen`);
     const ingredientData = await getDocs(
       collection(db, `users/${currentUser}/kitchen`)
     );
@@ -67,15 +53,9 @@ function App() {
         id: doc.id,
       }))
     );
-    // console.log(ingredientData);
   };
 
-  const handleUserChange = (event) => {
-    // console.log(event);
-    setCurrentUser(event.target.value);
-    console.log(event.target.value);
-  };
-
+  // async api call to db: CREATE ingredients
   const createIngredients = async () => {
     await addDoc(collection(db, `users/${currentUser}/kitchen`), {
       name: newIngredientsName,
@@ -84,6 +64,7 @@ function App() {
     getIngredients();
   };
 
+  // async api call to db: UPDATE ingredients (increase count on button click)
   const increaseIngredients = async (ingredient) => {
     const userDoc = doc(db, `users/${currentUser}/kitchen/${ingredient.id}`);
     const newFields = { quantity: ingredient.quantity + 1 };
@@ -91,6 +72,7 @@ function App() {
     getIngredients();
   };
 
+  // async api call to db: UPDATE ingredients (decrease count on button click)
   const decreaseIngredients = async (ingredient) => {
     const userDoc = doc(db, `users/${currentUser}/kitchen/${ingredient.id}`);
     const newFields = { quantity: ingredient.quantity - 1 };
@@ -100,11 +82,11 @@ function App() {
 
   useEffect(() => {
     getUsers();
-
     // eslint-disable-next-line
   }, []);
-  // do NOT uncomment the line below. This is here as a reminder that putting something in the deps array will cause reads to skyrocket.
+  // do NOT uncomment the line below. Putting something in the deps array will cause reads to skyrocket.
   // }, [usersCollection]);
+
   useEffect(() => {
     getIngredients();
     // eslint-disable-next-line
@@ -132,34 +114,15 @@ function App() {
               ))}
             </select>
           </label>
+          <br></br>
+          <button
+            onClick={() => {
+              deleteUser(currentUser);
+            }}
+          >
+            delete user
+          </button>
         </div>
-
-        {/* {users.map((user) => {
-          return (
-            <section>
-              {" "}
-              <br></br>
-              <li>{user.username}</li>
-              <br></br>
-              <section>
-                <button
-                  onClick={() => {
-                    getIngredients(user);
-                  }}
-                >
-                  see {user.username}'s kitchen
-                </button>
-                <button
-                  onClick={() => {
-                    deleteUser(user.id);
-                  }}
-                >
-                  delete {user.username}
-                </button>
-              </section>
-            </section>
-          );
-        })} */}
       </section>
 
       <section className="user-kitchen">
@@ -224,7 +187,7 @@ function App() {
         </button>
       </section>
 
-      <NewUserForm createUser={createUser} getUsers={getUsers} />
+      <NewUserForm db={db} getUsers={getUsers} />
 
       <footer className="App-footer">
         <p>made with ReactJS + Google Firebase + &hearts;</p>
