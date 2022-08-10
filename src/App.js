@@ -66,17 +66,33 @@ function App() {
 
   // async api call to db: UPDATE ingredients (increase count on button click)
   const increaseIngredients = async (ingredient) => {
-    const userDoc = doc(db, `users/${currentUser}/kitchen/${ingredient.id}`);
+    const ingredientDoc = doc(
+      db,
+      `users/${currentUser}/kitchen/${ingredient.id}`
+    );
     const newFields = { quantity: ingredient.quantity + 1 };
-    await updateDoc(userDoc, newFields);
+    await updateDoc(ingredientDoc, newFields);
     getIngredients();
   };
 
   // async api call to db: UPDATE ingredients (decrease count on button click)
   const decreaseIngredients = async (ingredient) => {
-    const userDoc = doc(db, `users/${currentUser}/kitchen/${ingredient.id}`);
+    const ingredientDoc = doc(
+      db,
+      `users/${currentUser}/kitchen/${ingredient.id}`
+    );
     const newFields = { quantity: ingredient.quantity - 1 };
-    await updateDoc(userDoc, newFields);
+    await updateDoc(ingredientDoc, newFields);
+    getIngredients();
+  };
+
+  // aync api call to db: DELETE ingredient
+  const deleteIngredient = async (ingredient) => {
+    const ingredientDoc = doc(
+      db,
+      `users/${currentUser}/kitchen/${ingredient.id}`
+    );
+    await deleteDoc(ingredientDoc);
     getIngredients();
   };
 
@@ -150,6 +166,14 @@ function App() {
                 }}
               >
                 ⬇
+              </button>
+              <br></br>
+              <button
+                onClick={() => {
+                  deleteIngredient(ingredient);
+                }}
+              >
+                delete ingredient
               </button>
               <p>______</p>
             </section>
