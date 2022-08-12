@@ -5,6 +5,8 @@
   grid-template-rows: repeat(6, auto auto auto auto auto auto);
   gap: 20px;
   background-color: #f1f1d5;
+  position: relative;
+  min-height: 100vh;
 }
 
 .App-footer {
@@ -13,7 +15,7 @@
   color: white;
   grid-column: 1 / 7;
   /* grid-row-start: 6; */
-  position: fixed;
+  position: absolute;
   bottom: 0;
   width: 100%
 }
@@ -32,6 +34,22 @@
   grid-column: 2 / 6;;
   grid-row: 7 / 9;
   border-radius: 18px;
+}
+
+.recipe-list {
+  margin: 2px;
+  background-color: #f1a1ffcf;
+  grid-column: 2 / 6;;
+  grid-row: 9 / 11;
+  border-radius: 18px;
+  list-style: none;
+}
+
+.recipe-card {
+  border-style: dashed;
+  border-radius: 18px;
+  background-color: #f1f1d5;
+  margin: 12px;
 }
 
 .user-new {
@@ -60,6 +78,16 @@
   list-style: none;
   /* display: flex;
   flex-direction: row; */
+}
+
+.edamam-badge {
+  width: 25%;
+  align-self: flex-end;
+}
+
+.recipe-ingredients {
+  list-style: none;
+  /* align-self: auto; */
 }
 
 /* .increase-button {

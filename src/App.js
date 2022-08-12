@@ -1,5 +1,8 @@
 import "./App.css";
+import axios from "axios";
+import { ReactComponent as EdamamBadge } from "./components/EdamamBadge.svg";
 import NewUserForm from "./components/NewUserForm";
+import ReturningUserList from "./components/ReturningUserList";
 import { useState, useEffect } from "react";
 import { db } from "./firebase.config";
 import {
@@ -10,6 +13,11 @@ import {
   deleteDoc,
   updateDoc,
 } from "firebase/firestore";
+import KitchenIngredientList from "./components/KitchenIngredientList";
+
+const EDAMAMURL = "https://api.edamam.com/api/recipes/v2";
+const APP_ID = process.env.REACT_APP_EDAMAM_ID;
+const APP_KEY = process.env.REACT_APP_EDAMAM_KEY;
 
 function App() {
   const [users, setUsers] = useState([]);
@@ -19,18 +27,14 @@ function App() {
   const [newIngredientsName, setNewIngredientsName] = useState([]);
   const [newIngredientsQuantity, setNewIngredientsQuantity] = useState([]);
 
+  const [recipes, setRecipes] = useState([]);
+
   const usersCollection = collection(db, "users");
 
   // event handler that updates current user state when a different user is clicked on the user drop down menu
   const handleUserChange = (event) => {
     setCurrentUser(event.target.value);
-  };
-
-  // async api call to db: DELETE user
-  const deleteUser = async (id) => {
-    const userDoc = doc(db, "users", id);
-    await deleteDoc(userDoc);
-    getUsers();
+    setRecipes([]);
   };
 
   // async api call to db: READ users
@@ -98,6 +102,7 @@ function App() {
 
   useEffect(() => {
     getUsers();
+
     // eslint-disable-next-line
   }, []);
   // do NOT uncomment the line below. Putting something in the deps array will cause reads to skyrocket.
@@ -108,78 +113,53 @@ function App() {
     // eslint-disable-next-line
   }, [currentUser]);
 
+  const getRecipes = (ingredient) => {
+    axios
+      .get(
+        `${EDAMAMURL}/?type=public&q=${ingredient.name}&app_id=${APP_ID}&app_key=${APP_KEY}`
+      )
+      .then((response) => {
+        // console.log(response.data.hits);
+        // console.log(response.data.hits[0].recipe);
+        const recipeArray = response.data.hits.map((recipe) => {
+          return { recipe };
+        });
+        console.log(recipeArray[0].recipe.recipe.ingredients);
+        // console.log(recipeArray[0].recipe);
+        setRecipes(recipeArray);
+        // console.log(recipes);
+      });
+    // .catch((error) => {
+    //   console.log(error);
+    // });
+  };
+  // useEffect(getRecipes, []);
+
   return (
     <section className="App">
       <header className="App-header">
         <h1>what the fridge?!</h1>
       </header>
 
-      <section className="user-return">
-        <h2>Have you been here before?</h2>
-        <h3>Select a name from the list of users below:</h3>
-        <div className="select-container">
-          <label>
-            Select a username:
-            <select
-              onChange={(event) => {
-                handleUserChange(event);
-              }}
-            >
-              {users.map((user) => (
-                <option value={user.id}>{user.username}</option>
-              ))}
-            </select>
-          </label>
-          <br></br>
-          <button
-            onClick={() => {
-              deleteUser(currentUser);
-            }}
-          >
-            delete user
-          </button>
-        </div>
-      </section>
+      <NewUserForm db={db} getUsers={getUsers} />
 
-      <section className="user-kitchen">
-        <h2>Kitchen</h2>
-        {ingredients?.map((ingredient) => {
-          return (
-            <section>
-              <li>
-                <h3>{ingredient.name}</h3>
-              </li>
-              <button
-                className="increase-button"
-                onClick={() => {
-                  increaseIngredients(ingredient);
-                }}
-              >
-                ⬆
-              </button>
-              <p>{ingredient.quantity}</p>
-              <p>{ingredient.unit}</p>
-              <button
-                className="decrease-button"
-                onClick={() => {
-                  decreaseIngredients(ingredient);
-                }}
-              >
-                ⬇
-              </button>
-              <br></br>
-              <button
-                onClick={() => {
-                  deleteIngredient(ingredient);
-                }}
-              >
-                delete ingredient
-              </button>
-              <p>______</p>
-            </section>
-          );
-        })}
-      </section>
+      <ReturningUserList
+        db={db}
+        users={users}
+        getUsers={getUsers}
+        handleUserChange={handleUserChange}
+        currentUser={currentUser}
+      />
+
+      <KitchenIngredientList
+        db={db}
+        ingredients={ingredients}
+        // getIngredients={getIngredients}
+        increaseIngredients={increaseIngredients}
+        decreaseIngredients={decreaseIngredients}
+        getRecipes={getRecipes}
+        deleteIngredient={deleteIngredient}
+      />
 
       <section className="kitchen-form">
         <h2>add ingredients to kitchen:</h2>
@@ -211,7 +191,50 @@ function App() {
         </button>
       </section>
 
-      <NewUserForm db={db} getUsers={getUsers} />
+      <section className="recipe-list">
+        <h2>recipe box</h2>
+        {recipes?.map((recipe) => {
+          return (
+            <section className="recipe-card">
+              <h3>
+                {recipe.recipe.recipe.label} by {recipe.recipe.recipe.source}
+              </h3>
+              <br></br>
+              <img src={recipe.recipe.recipe.image} alt="recipe"></img>
+              <br></br>
+              <section>
+                <h4>categories</h4>
+                {recipe.recipe.recipe.dishType.map((type) => {
+                  return <li>{type}</li>;
+                })}
+                {recipe.recipe.recipe.dietLabels.map((label) => {
+                  return <li>{label}</li>;
+                })}
+              </section>
+              <section className="recipe-ingredients">
+                <h4>ingredients</h4>
+                {recipe.recipe.recipe.ingredients.map((ingredient) => {
+                  return <li>{ingredient.food}</li>;
+                })}
+              </section>
+              <br></br>
+              <button>
+                <a
+                  href={recipe.recipe.recipe.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  get recipe
+                </a>
+              </button>
+              <br></br>
+            </section>
+          );
+        })}
+        <section className="edamam-badge">
+          <EdamamBadge />
+        </section>
+      </section>
 
       <footer className="App-footer">
         <p>made with ReactJS + Google Firebase + &hearts;</p>

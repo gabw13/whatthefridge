@@ -14,6 +14,7 @@ const NewUserForm = (props) => {
   const onFormSubmit = (event) => {
     event.preventDefault();
     createUser();
+    setNewUser("");
   };
 
   // async api call to db: CREATE user
@@ -30,9 +31,14 @@ const NewUserForm = (props) => {
       <form onSubmit={onFormSubmit}>
         <label htmlFor="username">
           Enter your username:
-          <input type="text" name="username" onChange={onFormChange}></input>
+          <input
+            type="text"
+            name="username"
+            value={newUser}
+            onChange={onFormChange}
+          ></input>
         </label>
-        <button>submit</button>
+        <button type="submit">submit</button>
         <h4>Let's get cookin'!</h4>
       </form>
     </section>
