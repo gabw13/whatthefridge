@@ -1,8 +1,9 @@
 import "./App.css";
 import axios from "axios";
-import { ReactComponent as EdamamBadge } from "./components/EdamamBadge.svg";
 import NewUserForm from "./components/NewUserForm";
 import ReturningUserList from "./components/ReturningUserList";
+import KitchenIngredientList from "./components/KitchenIngredientList";
+import RecipeList from "./components/RecipeList";
 import { useState, useEffect } from "react";
 import { db } from "./firebase.config";
 import {
@@ -13,7 +14,6 @@ import {
   deleteDoc,
   updateDoc,
 } from "firebase/firestore";
-import KitchenIngredientList from "./components/KitchenIngredientList";
 
 const EDAMAMURL = "https://api.edamam.com/api/recipes/v2";
 const APP_ID = process.env.REACT_APP_EDAMAM_ID;
@@ -161,6 +161,8 @@ function App() {
         deleteIngredient={deleteIngredient}
       />
 
+      <RecipeList recipes={recipes} />
+
       <section className="kitchen-form">
         <h2>add ingredients to kitchen:</h2>
         <section></section>
@@ -189,51 +191,6 @@ function App() {
         <button type="submit" onClick={createIngredients}>
           submit
         </button>
-      </section>
-
-      <section className="recipe-list">
-        <h2>recipe box</h2>
-        {recipes?.map((recipe) => {
-          return (
-            <section className="recipe-card">
-              <h3>
-                {recipe.recipe.recipe.label} by {recipe.recipe.recipe.source}
-              </h3>
-              <br></br>
-              <img src={recipe.recipe.recipe.image} alt="recipe"></img>
-              <br></br>
-              <section>
-                <h4>categories</h4>
-                {recipe.recipe.recipe.dishType.map((type) => {
-                  return <li>{type}</li>;
-                })}
-                {recipe.recipe.recipe.dietLabels.map((label) => {
-                  return <li>{label}</li>;
-                })}
-              </section>
-              <section className="recipe-ingredients">
-                <h4>ingredients</h4>
-                {recipe.recipe.recipe.ingredients.map((ingredient) => {
-                  return <li>{ingredient.food}</li>;
-                })}
-              </section>
-              <br></br>
-              <button>
-                <a
-                  href={recipe.recipe.recipe.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  get recipe
-                </a>
-              </button>
-              <br></br>
-            </section>
-          );
-        })}
-        <section className="edamam-badge">
-          <EdamamBadge />
-        </section>
       </section>
 
       <footer className="App-footer">
