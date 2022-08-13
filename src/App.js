@@ -4,13 +4,14 @@ import NewUserForm from "./components/NewUserForm";
 import ReturningUserList from "./components/ReturningUserList";
 import KitchenIngredientList from "./components/KitchenIngredientList";
 import RecipeList from "./components/RecipeList";
+import AddIngredientForm from "./components/AddIngredientForm";
 import { useState, useEffect } from "react";
 import { db } from "./firebase.config";
 import {
   collection,
   doc,
   getDocs,
-  addDoc,
+  // addDoc,
   deleteDoc,
   updateDoc,
 } from "firebase/firestore";
@@ -24,8 +25,6 @@ function App() {
   const [currentUser, setCurrentUser] = useState([]);
 
   const [ingredients, setIngredients] = useState([]);
-  const [newIngredientsName, setNewIngredientsName] = useState([]);
-  const [newIngredientsQuantity, setNewIngredientsQuantity] = useState([]);
 
   const [recipes, setRecipes] = useState([]);
 
@@ -57,15 +56,6 @@ function App() {
         id: doc.id,
       }))
     );
-  };
-
-  // async api call to db: CREATE ingredients
-  const createIngredients = async () => {
-    await addDoc(collection(db, `users/${currentUser}/kitchen`), {
-      name: newIngredientsName,
-      quantity: Number(newIngredientsQuantity),
-    });
-    getIngredients();
   };
 
   // async api call to db: UPDATE ingredients (increase count on button click)
@@ -113,27 +103,21 @@ function App() {
     // eslint-disable-next-line
   }, [currentUser]);
 
-  const getRecipes = (ingredient) => {
-    axios
+  const getRecipes = async (ingredient) => {
+    await axios
       .get(
         `${EDAMAMURL}/?type=public&q=${ingredient.name}&app_id=${APP_ID}&app_key=${APP_KEY}`
       )
       .then((response) => {
-        // console.log(response.data.hits);
-        // console.log(response.data.hits[0].recipe);
         const recipeArray = response.data.hits.map((recipe) => {
           return { recipe };
         });
-        console.log(recipeArray[0].recipe.recipe.ingredients);
-        // console.log(recipeArray[0].recipe);
         setRecipes(recipeArray);
-        // console.log(recipes);
       });
-    // .catch((error) => {
+    //   .catch((error) => {
     //   console.log(error);
     // });
   };
-  // useEffect(getRecipes, []);
 
   return (
     <section className="App">
@@ -141,7 +125,11 @@ function App() {
         <h1>what the fridge?!</h1>
       </header>
 
-      <NewUserForm db={db} getUsers={getUsers} />
+      <NewUserForm
+        db={db}
+        getUsers={getUsers}
+        handleUserChange={handleUserChange}
+      />
 
       <ReturningUserList
         db={db}
@@ -154,44 +142,18 @@ function App() {
       <KitchenIngredientList
         db={db}
         ingredients={ingredients}
-        // getIngredients={getIngredients}
         increaseIngredients={increaseIngredients}
         decreaseIngredients={decreaseIngredients}
         getRecipes={getRecipes}
         deleteIngredient={deleteIngredient}
       />
 
-      <RecipeList recipes={recipes} />
+      <AddIngredientForm
+        getIngredients={getIngredients}
+        currentUser={currentUser}
+      />
 
-      <section className="kitchen-form">
-        <h2>add ingredients to kitchen:</h2>
-        <section></section>
-        <label>
-          Ingredient name:
-          <input
-            type="text"
-            name="name"
-            onChange={(event) => {
-              setNewIngredientsName(event.target.value);
-            }}
-          ></input>
-        </label>
-        <br></br>
-        <label>
-          Ingredient quantity:
-          <input
-            type="text"
-            name="quantity"
-            onChange={(event) => {
-              setNewIngredientsQuantity(event.target.value);
-            }}
-          ></input>
-        </label>
-        <br></br>
-        <button type="submit" onClick={createIngredients}>
-          submit
-        </button>
-      </section>
+      <RecipeList recipes={recipes} />
 
       <footer className="App-footer">
         <p>made with ReactJS + Google Firebase + &hearts;</p>

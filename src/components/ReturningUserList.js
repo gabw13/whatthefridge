@@ -1,4 +1,3 @@
-// import React, { useState } from "react";
 import { doc, deleteDoc } from "firebase/firestore";
 
 const ReturningUserList = (props) => {
@@ -14,7 +13,7 @@ const ReturningUserList = (props) => {
       <h2>Have you been here before?</h2>
       <h3>Select a name from the list of users below:</h3>
       <div className="select-container">
-        <label>
+        <label htmlFor="create username">
           Select a username:
           <select
             onChange={(event) => {
