@@ -1,6 +1,9 @@
 import { ReactComponent as EdamamBadge } from "./EdamamBadge.svg";
 
 const RecipeList = (props) => {
+  const confirmLeave = (event) => {
+    alert("Recipe will open shortly in a new tab.");
+  };
   return (
     <section className="recipe-list">
       <h2>recipe box</h2>
@@ -29,7 +32,7 @@ const RecipeList = (props) => {
               })}
             </section>
             <br></br>
-            <button>
+            <button onClick={confirmLeave}>
               <a
                 href={recipe.recipe.recipe.url}
                 target="_blank"

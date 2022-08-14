@@ -24,6 +24,7 @@ const AddIngredientForm = (props) => {
       name: newIngredientsName,
       quantity: Number(newIngredientsQuantity),
     });
+    alert(`${newIngredientsName} added to kitchen!`);
     props.getIngredients();
   };
 

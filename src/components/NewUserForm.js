@@ -12,6 +12,7 @@ const NewUserForm = (props) => {
 
   // submit handler that sends the item to the createUser function when the user clicks submit
   const onFormSubmit = (event) => {
+    alert(`New user: ${newUser} created!`);
     event.preventDefault();
     createUser();
     setNewUser("");

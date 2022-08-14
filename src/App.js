@@ -30,6 +30,12 @@ function App() {
 
   const usersCollection = collection(db, "users");
 
+  // const checkKitchen = () => {
+  //   if (ingredients === null) {
+  //     return "Kitchen is empty! Add some ingredients to get started.";
+  //   }
+  // };
+
   // event handler that updates current user state when a different user is clicked on the user drop down menu
   const handleUserChange = (event) => {
     setCurrentUser(event.target.value);
