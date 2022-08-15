@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+// import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 const KitchenIngredientList = (props) => {
@@ -7,9 +7,11 @@ const KitchenIngredientList = (props) => {
   //   props.getIngredients();
   //   // eslint-disable-next-line
   // }, []);
+  // console.log(props.testProp);
 
   return (
     <section className="user-kitchen">
+      {/* <h2>welcome back {props.currentUser}!</h2> */}
       <h2>welcome back {params.username}!</h2>
       <button onClick={props.getIngredients()}>open my fridge</button>
       <h3>here's your kitchen: </h3>

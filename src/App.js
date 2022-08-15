@@ -22,8 +22,8 @@ const APP_ID = process.env.REACT_APP_EDAMAM_ID;
 const APP_KEY = process.env.REACT_APP_EDAMAM_KEY;
 
 function App() {
-  const [users, setUsers] = useState([]);
-  const [currentUser, setCurrentUser] = useState([]);
+  const [users, setUsers] = useState(["testuser777"]);
+  const [currentUser, setCurrentUser] = useState(["testuser777"]);
 
   const [ingredients, setIngredients] = useState([]);
 
@@ -47,7 +47,7 @@ function App() {
   const getUsers = async () => {
     const userData = await getDocs(usersCollection);
     // loop through docs in collection and set users array to be equal to array of doc data and id for each doc
-    setUsers(userData.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+    // setUsers(userData.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
   };
 
   // async api call to db: READ ingredients
@@ -120,10 +120,10 @@ function App() {
           return { recipe };
         });
         setRecipes(recipeArray);
+      })
+      .catch((error) => {
+        console.log(error);
       });
-    //   .catch((error) => {
-    //   console.log(error);
-    // });
   };
 
   return (
@@ -173,6 +173,7 @@ function App() {
                 getRecipes={getRecipes}
                 deleteIngredient={deleteIngredient}
                 currentUser={currentUser}
+                testProp={"1,2"}
               />
               <br></br>
               <AddIngredientForm

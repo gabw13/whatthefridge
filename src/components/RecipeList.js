@@ -10,8 +10,8 @@ const RecipeList = (props) => {
       {props.recipes?.map((recipe) => {
         return (
           <section className="recipe-card">
-            <li>
-              <h3 key={recipe.recipe.recipe.externalID}>
+            <li key={recipe.recipe.recipe.externalID}>
+              <h3>
                 {recipe.recipe.recipe.label} by {recipe.recipe.recipe.source}
               </h3>
             </li>
@@ -21,16 +21,16 @@ const RecipeList = (props) => {
             <section>
               <h4>categories</h4>
               {recipe.recipe.recipe.dishType.map((type) => {
-                return <li>{type}</li>;
+                return <p>{type}</p>;
               })}
               {recipe.recipe.recipe.dietLabels.map((label) => {
-                return <li>{label}</li>;
+                return <p>{label}</p>;
               })}
             </section>
             <section className="recipe-ingredients">
               <h4>ingredients</h4>
               {recipe.recipe.recipe.ingredients.map((ingredient) => {
-                return <li>{ingredient.food}</li>;
+                return <p>{ingredient.food}</p>;
               })}
             </section>
             <br></br>

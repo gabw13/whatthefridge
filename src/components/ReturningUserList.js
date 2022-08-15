@@ -1,4 +1,4 @@
-import { doc, deleteDoc } from "firebase/firestore";
+// import { doc, deleteDoc } from "firebase/firestore";
 
 const ReturningUserList = (props) => {
   // async api call to db: DELETE user
@@ -13,7 +13,7 @@ const ReturningUserList = (props) => {
       <h2>or have you been here before? 🤔 </h2>
       <p>select your username from the list below:</p>
       <div className="select-container">
-        <label htmlFor="create username">
+        <label htmlFor="choose username">
           users:{" "}
           <select
             onChange={(event) => {
