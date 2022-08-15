@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { addDoc, collection } from "firebase/firestore";
+import { useNavigate } from "react-router-dom";
 
 const NewUserForm = (props) => {
+  const navigate = useNavigate();
   const [newUser, setNewUser] = useState("");
 
   // event handler that updates the state of the new user as the user types the name into the form
@@ -12,26 +14,26 @@ const NewUserForm = (props) => {
 
   // submit handler that sends the item to the createUser function when the user clicks submit
   const onFormSubmit = (event) => {
-    alert(`New user: ${newUser} created!`);
     event.preventDefault();
     createUser();
+    props.setCurrentUser(newUser);
+    navigate(`/${newUser}`);
     setNewUser("");
   };
 
   // async api call to db: CREATE user
   const createUser = async () => {
     await addDoc(collection(props.db, "users"), { username: newUser });
+    alert(`New user: ${newUser} created! ✨ `);
     props.getUsers();
   };
 
   return (
     <section className="user-new">
-      <h2>Are you new here?</h2>
-      <h3>Welcome!</h3>
-
+      <h2>👋 hey! are you new here? </h2>
       <form onSubmit={onFormSubmit}>
         <label htmlFor="username">
-          Enter your username:
+          create a username:{" "}
           <input
             type="text"
             name="username"
@@ -40,8 +42,9 @@ const NewUserForm = (props) => {
           ></input>
         </label>
         <button type="submit">submit</button>
-        <h4>Let's get cookin'!</h4>
       </form>
+      <p>pssst...</p>
+      <p> there are no rules here, just pick a name you'll remember 🤭 </p>
     </section>
   );
 };

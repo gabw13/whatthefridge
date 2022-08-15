@@ -3,10 +3,11 @@
   display: grid;
   grid-template-columns: repeat(6, 1fr);
   grid-template-rows: repeat(6, auto auto auto auto auto auto);
-  gap: 20px;
+  gap: 25px;
   background-color: #f1f1d5;
   position: relative;
   min-height: 100vh;
+  align-content: space-evenly;
 }
 
 .App-footer {
@@ -23,7 +24,7 @@
 .App-header {
   background-color: #778997;
   min-height: auto;
-  grid-column: 1 / 7;;
+  grid-column: 1 / 7;
   font-size: calc(10px + 2vmin);
   color: white;
 }
@@ -55,24 +56,36 @@
 .user-new {
   margin: 2px;
   background-color: #c4d297a7;
-  grid-column: 2 / 4;
-  grid-row: 3 / 5;
+  /* grid-column: 2 / 4; */
+  /* grid-row: 3 / 6; */
   border-radius: 18px;
+  padding: 8%;
+}
+
+.user-choice {
+  grid-column: 2 / 6;
+  grid-row-start: auto;
 }
 
 .user-return {
   margin: 2px;
   background-color: #e1c68fcf;
-  grid-column: 4 / 6;
-  grid-row: 3 / 5;
+  /* grid-column: 2 / 6; */
+  /* grid-row: 6 / 10; */
   border-radius: 18px;
   list-style: none;
+  padding: 8%;
+}
+
+.user-kitchen-page {
+  grid-column: 2 / 6;
+  grid-row-start: auto;
 }
 
 .user-kitchen {
   margin: 2px;
   background-color: #90caf0cf;
-  grid-column: 2 / 6;;
+  grid-column: 2 / 6;
   grid-row: 5 / 7;
   border-radius: 18px;
   list-style: none;
@@ -88,6 +101,24 @@
 .recipe-ingredients {
   list-style: none;
   /* align-self: auto; */
+}
+
+main {
+  background-color: aliceblue;
+  border-radius: 18px;
+  grid-column: 2 / 6;
+}
+
+nav {
+  align-items: center;
+  grid-column: 1 / 7;
+  margin: 2%;
+}
+
+.checklist {
+  list-style: none;
+  text-align: left;
+  padding-left: 30%;
 }
 
 /* .increase-button {

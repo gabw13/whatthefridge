@@ -1,11 +1,22 @@
+import { useEffect } from "react";
+import { useParams } from "react-router-dom";
+
 const KitchenIngredientList = (props) => {
+  let params = useParams();
+  // useEffect(() => {
+  //   props.getIngredients();
+  //   // eslint-disable-next-line
+  // }, []);
+
   return (
     <section className="user-kitchen">
-      <h2>Kitchen</h2>
+      <h2>welcome back {params.username}!</h2>
+      <button onClick={props.getIngredients()}>open my fridge</button>
+      <h3>here's your kitchen: </h3>
       {props.ingredients?.map((ingredient) => {
         return (
           <section>
-            <li>
+            <li key={ingredient.id}>
               <h3>{ingredient.name}</h3>
             </li>
             <button

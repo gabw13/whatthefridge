@@ -1,5 +1,6 @@
 import "./App.css";
 import axios from "axios";
+import { Routes, Route, Link, Outlet } from "react-router-dom";
 import NewUserForm from "./components/NewUserForm";
 import ReturningUserList from "./components/ReturningUserList";
 import KitchenIngredientList from "./components/KitchenIngredientList";
@@ -39,7 +40,7 @@ function App() {
   // event handler that updates current user state when a different user is clicked on the user drop down menu
   const handleUserChange = (event) => {
     setCurrentUser(event.target.value);
-    setRecipes([]);
+    // setRecipes([]);
   };
 
   // async api call to db: READ users
@@ -104,10 +105,10 @@ function App() {
   // do NOT uncomment the line below. Putting something in the deps array will cause reads to skyrocket.
   // }, [usersCollection]);
 
-  useEffect(() => {
-    getIngredients();
-    // eslint-disable-next-line
-  }, [currentUser]);
+  // useEffect(() => {
+  //   getIngredients();
+  //   // eslint-disable-next-line
+  // }, [currentUser]);
 
   const getRecipes = async (ingredient) => {
     await axios
@@ -129,9 +130,62 @@ function App() {
     <section className="App">
       <header className="App-header">
         <h1>what the fridge?!</h1>
+        <nav>
+          <Link to="/">home </Link> | <Link to="/about">about </Link>
+        </nav>
       </header>
 
-      <NewUserForm
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="about" element={<About />} />
+        <Route
+          path="users"
+          element={
+            <section className="user-choice">
+              <NewUserForm
+                db={db}
+                getUsers={getUsers}
+                handleUserChange={handleUserChange}
+                setCurrentUser={setCurrentUser}
+                currentUser={currentUser}
+              />
+              <br></br>
+              <ReturningUserList
+                db={db}
+                users={users}
+                getUsers={getUsers}
+                handleUserChange={handleUserChange}
+                currentUser={currentUser}
+              />
+            </section>
+          }
+        ></Route>
+        <Route
+          path=":username"
+          element={
+            <section className="user-kitchen-page">
+              <KitchenIngredientList
+                db={db}
+                ingredients={ingredients}
+                increaseIngredients={increaseIngredients}
+                decreaseIngredients={decreaseIngredients}
+                getIngredients={getIngredients}
+                getRecipes={getRecipes}
+                deleteIngredient={deleteIngredient}
+                currentUser={currentUser}
+              />
+              <br></br>
+              <AddIngredientForm
+                getIngredients={getIngredients}
+                currentUser={currentUser}
+              />
+              <br></br>
+            </section>
+          }
+        ></Route>
+      </Routes>
+
+      {/* <NewUserForm
         db={db}
         getUsers={getUsers}
         handleUserChange={handleUserChange}
@@ -143,9 +197,9 @@ function App() {
         getUsers={getUsers}
         handleUserChange={handleUserChange}
         currentUser={currentUser}
-      />
+      /> */}
 
-      <KitchenIngredientList
+      {/* <KitchenIngredientList
         db={db}
         ingredients={ingredients}
         increaseIngredients={increaseIngredients}
@@ -159,13 +213,56 @@ function App() {
         currentUser={currentUser}
       />
 
-      <RecipeList recipes={recipes} />
+      <RecipeList recipes={recipes} /> */}
 
       <footer className="App-footer">
-        <p>made with ReactJS + Google Firebase + &hearts;</p>
+        {/* <p>made with ReactJS + Google Firebase + &hearts;</p> */}
         <p>&copy; 2022 Gaby Webb </p>
       </footer>
     </section>
+  );
+}
+
+function Home() {
+  return (
+    <>
+      <main>
+        {" "}
+        <h1>welcome!</h1>
+        <p>are you....</p>
+        <section className="checklist">
+          <li>✅ eating the same meals over and over?</li>
+          <br></br>
+          <li>✅ tired of staring blankly into your fridge?</li>
+          <br></br>
+          <li>✅ throwing away perfectly good food regularly?</li>
+        </section>
+        <p> well, what are you waiting for?</p>
+        <p>
+          <a href="/users">let's get cookin', good lookin'!</a>
+        </p>
+      </main>
+    </>
+  );
+}
+
+function About() {
+  return (
+    <>
+      <main>
+        <h1>about</h1>
+        <p>
+          What the Fridge was made in August 2022 by Gaby Webb with ReactJS +
+          Google Firebase + EdamamAPI + &hearts;
+        </p>
+        <h2>contact</h2>
+        <a href="mailto:gabw813@gmail.com">email</a>
+        <br></br>
+        <a href="https://www.linkedin.com/in/gabriela-webb">linkedIn</a>
+        <br></br>
+        <a href="https://github.com/gabw13">github</a>
+      </main>
+    </>
   );
 }
 

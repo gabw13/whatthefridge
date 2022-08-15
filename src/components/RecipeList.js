@@ -10,9 +10,11 @@ const RecipeList = (props) => {
       {props.recipes?.map((recipe) => {
         return (
           <section className="recipe-card">
-            <h3>
-              {recipe.recipe.recipe.label} by {recipe.recipe.recipe.source}
-            </h3>
+            <li>
+              <h3 key={recipe.recipe.recipe.externalID}>
+                {recipe.recipe.recipe.label} by {recipe.recipe.recipe.source}
+              </h3>
+            </li>
             <br></br>
             <img src={recipe.recipe.recipe.image} alt="recipe"></img>
             <br></br>
