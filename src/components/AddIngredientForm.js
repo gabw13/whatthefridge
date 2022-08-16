@@ -53,8 +53,9 @@ const AddIngredientForm = (props) => {
         <label>
           Ingredient quantity:
           <input
-            type="text"
+            type="number"
             name="quantity"
+            min="1"
             value={newIngredientsQuantity}
             onChange={onQuantityChange}
           ></input>

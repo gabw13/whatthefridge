@@ -4,16 +4,20 @@
   grid-template-columns: repeat(6, 1fr);
   grid-template-rows: repeat(4, auto auto auto auto);
   gap: 25px;
-  background-color: #f1f1d5;
+  background-color: #cedbe1;
   position: relative;
   min-height: 100vh;
   align-content: space-evenly;
+  background-image: url("../public/brooke-lark-08bOYnH_r_E-unsplash.jpg");
+  background-size: 100vw;
+  background-repeat: no-repeat;
 }
 
 .App-footer {
-  background-color: #778997;
+  /* background-color: #92aabb; */
   font-size: calc(2px + 2vmin);
-  color: white;
+  font-weight: bold;
+  color: #95b6ad;
   grid-column: 1 / 7;
   position: absolute;
   bottom: 0;
@@ -21,40 +25,49 @@
 }
 
 .App-header {
-  background-color: #778997;
+  background-color: #95b6ad;
   min-height: auto;
   grid-column: 1 / 7;
-  font-size: calc(10px + 2vmin);
+  /* font-size: calc(10px + 2vmin); */
   color: white;
+}
+
+.App-title {
+  /* font-size: calc(10px + 2vmin); */
+  font-size: xx-large;
 }
 
 .kitchen-form {
   margin: 2px;
-  background-color: #a1a9ffcf;
-  grid-column: 2 / 6;;
+  background-color: #fbdfa8c0;
+  grid-column: 2 / 6;
   grid-row: 7 / 9;
   border-radius: 18px;
+  padding: 8%;
 }
 
 .recipe-list {
   margin: 2px;
-  background-color: #f1a1ffcf;
+  background-color: #95b6adeb;
   grid-column: 2 / 6;;
   grid-row: 9 / 11;
   border-radius: 18px;
   list-style: none;
+  padding: 8%;
 }
 
 .recipe-card {
   border-style: dashed;
+  border-color: #c9d0e8db;
   border-radius: 18px;
-  background-color: #f1f1d5;
+  background-color: #f1f1d5ee;
   margin: 12px;
+  padding: 2%;
 }
 
 .user-new {
   margin: 2px;
-  background-color: #c4d297a7;
+  background-color: #c9d0e8db;
   border-radius: 18px;
   padding: 8%;
 }
@@ -66,7 +79,7 @@
 
 .user-return {
   margin: 2px;
-  background-color: #e1c68fcf;
+  background-color: #fbbac3e2;
   border-radius: 18px;
   list-style: none;
   padding: 8%;
@@ -75,15 +88,17 @@
 .user-kitchen-page {
   grid-column: 2 / 6;
   grid-row-start: auto;
+    padding: 8%;
 }
 
 .user-kitchen {
   margin: 2px;
-  background-color: #90caf0cf;
+  background-color: #cdcdcfe3;
   grid-column: 2 / 6;
   grid-row: 5 / 7;
   border-radius: 18px;
   list-style: none;
+  padding: 8%;
 }
 
 .edamam-badge {
@@ -93,10 +108,11 @@
 
 .recipe-ingredients {
   list-style: none;
+  padding: 8%;
 }
 
 main {
-  background-color: aliceblue;
+  background-color: #fbdfa8c0;
   border-radius: 18px;
   grid-column: 2 / 6;
   padding: 8%;
@@ -105,11 +121,12 @@ main {
 nav {
   align-items: center;
   grid-column: 1 / 7;
+  font-size: medium;
   margin: 2%;
 }
 
 .checklist {
   list-style: none;
-  text-align: left;
-  padding-left: 30%;
+  /* text-align: left; */
+  /* padding-left: 30%; */
 }

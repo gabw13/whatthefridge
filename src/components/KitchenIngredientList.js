@@ -19,7 +19,7 @@ const KitchenIngredientList = (props) => {
       >
         delete user
       </button>
-      <h3>here's your kitchen: </h3>
+      {/* <h3>here's your kitchen: </h3> */}
       {props.ingredients?.map((ingredient) => {
         return (
           <section>

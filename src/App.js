@@ -37,8 +37,8 @@ function App() {
   };
 
   // const checkKitchen = () => {
-  //   if (ingredients === null) {
-  //     return "Kitchen is empty! Add some ingredients to get started.";
+  //   if (ingredients.length === 0) {
+  //     alert("Your kitchen is empty! Add some ingredients to get started.");
   //   }
   // };
 
@@ -46,7 +46,8 @@ function App() {
   const handleUserChange = (event) => {
     const chosenUser = event.target.value;
     setCurrentUser(chosenUser);
-    console.log(currentUser);
+    setIngredients([]);
+    setRecipes([]);
   };
 
   // async api call to db: READ users
@@ -137,7 +138,7 @@ function App() {
   return (
     <section className="App">
       <header className="App-header">
-        <h1>what the fridge?!</h1>
+        <h1 className="App-title">🍳 what the fridge?!</h1>
         <nav>
           <Link to="/">home </Link> | <Link to="/about">about </Link>
         </nav>
@@ -199,7 +200,6 @@ function App() {
       </Routes>
 
       <footer className="App-footer">
-        {/* <p>made with ReactJS + Google Firebase + &hearts;</p> */}
         <p>&copy; 2022 Gaby Webb </p>
       </footer>
     </section>
@@ -207,6 +207,11 @@ function App() {
 }
 
 function Home() {
+  let navigate = useNavigate();
+  const toUsers = () => {
+    let path = "/users";
+    navigate(path);
+  };
   return (
     <>
       <main>
@@ -220,9 +225,18 @@ function Home() {
           <br></br>
           <li>✅ throwing away perfectly good food regularly?</li>
         </section>
-        <p> well, what are you waiting for?</p>
+        <br></br>
         <p>
-          <a href="/users">let's get cookin', good lookin'!</a>
+          <i>what the fridge</i> can help with that!
+        </p>
+        <p>
+          <button
+            onClick={() => {
+              toUsers();
+            }}
+          >
+            click here to get cookin'!
+          </button>
         </p>
       </main>
     </>
