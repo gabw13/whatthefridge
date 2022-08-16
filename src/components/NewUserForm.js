@@ -1,9 +1,7 @@
 import React, { useState } from "react";
-import { addDoc, collection, doc } from "firebase/firestore";
-import { useNavigate, Link } from "react-router-dom";
+import { addDoc, collection } from "firebase/firestore";
 
 const NewUserForm = (props) => {
-  const navigate = useNavigate();
   const [newUser, setNewUser] = useState("");
 
   // event handler that updates the state of the new user as the user types the name into the form

@@ -1,6 +1,6 @@
 import "./App.css";
 import axios from "axios";
-import { Routes, Route, Link, Outlet, useNavigate } from "react-router-dom";
+import { Routes, Route, Link, useNavigate } from "react-router-dom";
 import NewUserForm from "./components/NewUserForm";
 import ReturningUserList from "./components/ReturningUserList";
 import KitchenIngredientList from "./components/KitchenIngredientList";
@@ -12,7 +12,6 @@ import {
   collection,
   doc,
   getDocs,
-  // addDoc,
   deleteDoc,
   updateDoc,
 } from "firebase/firestore";
@@ -32,6 +31,11 @@ function App() {
 
   const usersCollection = collection(db, "users");
 
+  const goHome = () => {
+    let path = "/";
+    navigate(path);
+  };
+
   // const checkKitchen = () => {
   //   if (ingredients === null) {
   //     return "Kitchen is empty! Add some ingredients to get started.";
@@ -40,25 +44,24 @@ function App() {
 
   // event handler that updates current user state when a different user is clicked on the user drop down menu
   const handleUserChange = (event) => {
-    // event.preventDefault();
     const chosenUser = event.target.value;
     setCurrentUser(chosenUser);
-    // setCurrentUser([]);
-
-    // navigate(`/${currentUser}`);
     console.log(currentUser);
-    // setRecipes([]);
   };
-  // useEffect(() => {
-  //   navigate(`/${currentUser}`);
-  // }, [currentUser]);
 
   // async api call to db: READ users
   const getUsers = async () => {
     const userData = await getDocs(usersCollection);
     // loop through docs in collection and set users array to be equal to array of doc data and id for each doc
     setUsers(userData.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-    // console.log(userData);
+  };
+
+  // async api call to db: DELETE user
+  const deleteUser = async (id) => {
+    const userDoc = doc(db, "users", id);
+    await deleteDoc(userDoc);
+    // getUsers();
+    goHome();
   };
 
   // async api call to db: READ ingredients
@@ -110,16 +113,10 @@ function App() {
 
   useEffect(() => {
     getUsers();
-
     // eslint-disable-next-line
   }, []);
   // do NOT uncomment the line below. Putting something in the deps array will cause reads to skyrocket.
   // }, [usersCollection]);
-
-  // useEffect(() => {
-  //   getIngredients();
-  //   // eslint-disable-next-line
-  // }, [currentUser]);
 
   const getRecipes = async (ingredient) => {
     await axios
@@ -187,6 +184,7 @@ function App() {
                 usersCollection={usersCollection}
                 currentUser={currentUser}
                 handleUserChange={handleUserChange}
+                deleteUser={deleteUser}
               />
               <br></br>
               <AddIngredientForm
@@ -199,36 +197,6 @@ function App() {
           }
         ></Route>
       </Routes>
-
-      {/* <NewUserForm
-        db={db}
-        getUsers={getUsers}
-        handleUserChange={handleUserChange}
-      />
-
-      <ReturningUserList
-        db={db}
-        users={users}
-        getUsers={getUsers}
-        handleUserChange={handleUserChange}
-        currentUser={currentUser}
-      /> */}
-
-      {/* <KitchenIngredientList
-        db={db}
-        ingredients={ingredients}
-        increaseIngredients={increaseIngredients}
-        decreaseIngredients={decreaseIngredients}
-        getRecipes={getRecipes}
-        deleteIngredient={deleteIngredient}
-      />
-
-      <AddIngredientForm
-        getIngredients={getIngredients}
-        currentUser={currentUser}
-      />
-
-      <RecipeList recipes={recipes} /> */}
 
       <footer className="App-footer">
         {/* <p>made with ReactJS + Google Firebase + &hearts;</p> */}

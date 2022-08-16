@@ -1,24 +1,8 @@
 // import { doc, deleteDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
 
 const ReturningUserList = (props) => {
-  const [selected, setSelected] = useState([]);
   const navigate = useNavigate();
-  // async api call to db: DELETE user
-  // const deleteUser = async (id) => {
-  //   const userDoc = doc(props.db, "users", id);
-  //   await deleteDoc(userDoc);
-  //   props.getUsers();
-  // };
-
-  // const handleUserChange = (event) => {
-  //   // console.log(event.target.value);
-  //   setSelected(event.target.value);
-  //   // props.setCurrentUser(selected);
-  //   // console.log(selected);
-  //   goToUserKitchen();
-  // };
 
   const routeChange = () => {
     let path = `/${props.currentUser}`;
@@ -33,11 +17,9 @@ const ReturningUserList = (props) => {
         <label htmlFor="choose username"></label>
         users:{" "}
         <select
-          // value={props.currentUser}
           onChange={(event) => {
             props.handleUserChange(event);
           }}
-          // multiple={false}
         >
           {props.users.map((user) => (
             <option value={user.id} key={user.id}>
@@ -49,13 +31,6 @@ const ReturningUserList = (props) => {
           go to my kitchen
         </button>
         <br></br>
-        {/* <button
-          onClick={() => {
-            deleteUser(props.currentUser);
-          }}
-        >
-          delete user
-        </button> */}
       </div>
     </section>
   );

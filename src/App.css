@@ -2,7 +2,7 @@
   text-align: center;
   display: grid;
   grid-template-columns: repeat(6, 1fr);
-  grid-template-rows: repeat(6, auto auto auto auto auto auto);
+  grid-template-rows: repeat(4, auto auto auto auto);
   gap: 25px;
   background-color: #f1f1d5;
   position: relative;
@@ -15,7 +15,6 @@
   font-size: calc(2px + 2vmin);
   color: white;
   grid-column: 1 / 7;
-  /* grid-row-start: 6; */
   position: absolute;
   bottom: 0;
   width: 100%
@@ -56,8 +55,6 @@
 .user-new {
   margin: 2px;
   background-color: #c4d297a7;
-  /* grid-column: 2 / 4; */
-  /* grid-row: 3 / 6; */
   border-radius: 18px;
   padding: 8%;
 }
@@ -70,8 +67,6 @@
 .user-return {
   margin: 2px;
   background-color: #e1c68fcf;
-  /* grid-column: 2 / 6; */
-  /* grid-row: 6 / 10; */
   border-radius: 18px;
   list-style: none;
   padding: 8%;
@@ -89,8 +84,6 @@
   grid-row: 5 / 7;
   border-radius: 18px;
   list-style: none;
-  /* display: flex;
-  flex-direction: row; */
 }
 
 .edamam-badge {
@@ -100,13 +93,13 @@
 
 .recipe-ingredients {
   list-style: none;
-  /* align-self: auto; */
 }
 
 main {
   background-color: aliceblue;
   border-radius: 18px;
   grid-column: 2 / 6;
+  padding: 8%;
 }
 
 nav {
@@ -120,15 +113,3 @@ nav {
   text-align: left;
   padding-left: 30%;
 }
-
-/* .increase-button {
-  flex-direction: row ;
-  margin-left: 20;
-  justify-self: space-evenly;
-  align-self: center;}
-
-.decrease-button {
-  flex-direction: row ;
-  margin-left: 20;
-  justify-content: space-evenly;
-  align-self: center;} */
