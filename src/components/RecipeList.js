@@ -36,6 +36,7 @@ const RecipeList = (props) => {
             <br></br>
             <button onClick={confirmLeave}>
               <a
+                className="recipe-url"
                 href={recipe.recipe.recipe.url}
                 target="_blank"
                 rel="noopener noreferrer"

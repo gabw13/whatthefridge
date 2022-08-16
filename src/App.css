@@ -14,7 +14,6 @@
 }
 
 .App-footer {
-  /* background-color: #92aabb; */
   font-size: calc(2px + 2vmin);
   font-weight: bold;
   color: #95b6ad;
@@ -109,6 +108,10 @@
 .recipe-ingredients {
   list-style: none;
   padding: 8%;
+}
+
+.recipe-url {
+  text-decoration: none;
 }
 
 main {

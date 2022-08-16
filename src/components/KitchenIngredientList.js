@@ -1,13 +1,20 @@
+// import { useEffect } from "react";
+
 const KitchenIngredientList = (props) => {
+  // const checkKitchen = () => {
+  //   if (props.ingredients.length === 0) {
+  //     alert("kitchen is empty");
+  //   }
+  // };
+
   return (
     <section className="user-kitchen">
-      {/* <h2>welcome {props.currentUser}!</h2> */}
-      {/* <h2>welcome {params.username}!</h2> */}
       <h2>welcome!</h2>
 
       <button
         onClick={() => {
           props.getIngredients();
+          // checkKitchen();
         }}
       >
         open my fridge

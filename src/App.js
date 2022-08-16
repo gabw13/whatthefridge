@@ -25,7 +25,7 @@ function App() {
   const [users, setUsers] = useState([]);
   const [currentUser, setCurrentUser] = useState([]);
 
-  const [ingredients, setIngredients] = useState([]);
+  const [ingredients, setIngredients] = useState(["nothing here!"]);
 
   const [recipes, setRecipes] = useState([]);
 
@@ -35,12 +35,6 @@ function App() {
     let path = "/";
     navigate(path);
   };
-
-  // const checkKitchen = () => {
-  //   if (ingredients.length === 0) {
-  //     alert("Your kitchen is empty! Add some ingredients to get started.");
-  //   }
-  // };
 
   // event handler that updates current user state when a different user is clicked on the user drop down menu
   const handleUserChange = (event) => {
@@ -235,7 +229,7 @@ function Home() {
               toUsers();
             }}
           >
-            click here to get cookin'!
+            click here to cook up some ideas!
           </button>
         </p>
       </main>
