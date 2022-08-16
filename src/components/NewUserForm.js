@@ -29,16 +29,19 @@ const NewUserForm = (props) => {
       <h2>Are you new here?</h2>
       <h3>Welcome!</h3>
 
-      <form onSubmit={onFormSubmit}>
-        <label htmlFor="username">
+      <form id="signup" className="form" onSubmit={onFormSubmit}>
+        <section className="form-field">
+          <label htmlFor="username"></label>
           Enter your username:
           <input
             type="text"
             name="username"
+            id="username"
             value={newUser}
             onChange={onFormChange}
           ></input>
-        </label>
+          <small></small>
+        </section>
         <button type="submit">submit</button>
         <h4>Let's get cookin'!</h4>
       </form>

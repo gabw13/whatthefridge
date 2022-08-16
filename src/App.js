@@ -30,6 +30,66 @@ function App() {
 
   const usersCollection = collection(db, "users");
 
+  // const usernameEl = document.querySelector("#username");
+  // const form = document.querySelector("#signup");
+  // form.addEventListener("submit", function (e) {
+  //   // prevent the form from submitting
+  //   e.preventDefault();
+  // });
+
+  // const isRequired = (value) => (value === "" ? false : true);
+
+  // const showError = (input, message) => {
+  //   // get the form-field element
+  //   const formField = input.parentElement;
+  //   // add the error class
+  //   formField.classList.remove("success");
+  //   formField.classList.add("error");
+
+  //   // show the error message
+  //   const error = formField.querySelector("small");
+  //   error.textContent = message;
+  // };
+
+  // const showSuccess = (input) => {
+  //   // get the form-field element
+  //   const formField = input.parentElement;
+
+  //   // remove the error class
+  //   formField.classList.remove("error");
+  //   formField.classList.add("success");
+
+  //   // hide the error message
+  //   const error = formField.querySelector("small");
+  //   error.textContent = "";
+  // };
+
+  // const checkUsername = () => {
+  //   let valid = false;
+
+  //   const username = usernameEl.value.trim();
+
+  //   if (!isRequired(username)) {
+  //     showError(usernameEl, "Username cannot be blank.");
+  //   } else {
+  //     showSuccess(usernameEl);
+  //     valid = true;
+  //   }
+  //   return valid;
+  // };
+
+  // form.addEventListener("submit", function (e) {
+  //   // prevent the form from submitting
+  //   e.preventDefault();
+
+  //   // validate fields
+  //   let isUsernameValid = checkUsername();
+
+  //   if (isUsernameValid) {
+  //     console.log("valid username");
+  //   }
+  // });
+
   // const checkKitchen = () => {
   //   if (ingredients === null) {
   //     return "Kitchen is empty! Add some ingredients to get started.";
