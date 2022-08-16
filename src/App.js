@@ -1,6 +1,6 @@
 import "./App.css";
 import axios from "axios";
-import { Routes, Route, Link, Outlet } from "react-router-dom";
+import { Routes, Route, Link, Outlet, useNavigate } from "react-router-dom";
 import NewUserForm from "./components/NewUserForm";
 import ReturningUserList from "./components/ReturningUserList";
 import KitchenIngredientList from "./components/KitchenIngredientList";
@@ -22,8 +22,9 @@ const APP_ID = process.env.REACT_APP_EDAMAM_ID;
 const APP_KEY = process.env.REACT_APP_EDAMAM_KEY;
 
 function App() {
-  const [users, setUsers] = useState(["testuser777"]);
-  const [currentUser, setCurrentUser] = useState(["testuser777"]);
+  const navigate = useNavigate();
+  const [users, setUsers] = useState([]);
+  const [currentUser, setCurrentUser] = useState([]);
 
   const [ingredients, setIngredients] = useState([]);
 
@@ -39,15 +40,25 @@ function App() {
 
   // event handler that updates current user state when a different user is clicked on the user drop down menu
   const handleUserChange = (event) => {
-    setCurrentUser(event.target.value);
+    // event.preventDefault();
+    const chosenUser = event.target.value;
+    setCurrentUser(chosenUser);
+    // setCurrentUser([]);
+
+    // navigate(`/${currentUser}`);
+    console.log(currentUser);
     // setRecipes([]);
   };
+  // useEffect(() => {
+  //   navigate(`/${currentUser}`);
+  // }, [currentUser]);
 
   // async api call to db: READ users
   const getUsers = async () => {
     const userData = await getDocs(usersCollection);
     // loop through docs in collection and set users array to be equal to array of doc data and id for each doc
-    // setUsers(userData.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+    setUsers(userData.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+    // console.log(userData);
   };
 
   // async api call to db: READ ingredients
@@ -145,7 +156,7 @@ function App() {
               <NewUserForm
                 db={db}
                 getUsers={getUsers}
-                handleUserChange={handleUserChange}
+                // handleUserChange={handleUserChange}
                 setCurrentUser={setCurrentUser}
                 currentUser={currentUser}
               />
@@ -155,13 +166,14 @@ function App() {
                 users={users}
                 getUsers={getUsers}
                 handleUserChange={handleUserChange}
+                setCurrentUser={setCurrentUser}
                 currentUser={currentUser}
               />
             </section>
           }
         ></Route>
         <Route
-          path=":username"
+          path=":id"
           element={
             <section className="user-kitchen-page">
               <KitchenIngredientList
@@ -172,8 +184,9 @@ function App() {
                 getIngredients={getIngredients}
                 getRecipes={getRecipes}
                 deleteIngredient={deleteIngredient}
+                usersCollection={usersCollection}
                 currentUser={currentUser}
-                testProp={"1,2"}
+                handleUserChange={handleUserChange}
               />
               <br></br>
               <AddIngredientForm
@@ -181,6 +194,7 @@ function App() {
                 currentUser={currentUser}
               />
               <br></br>
+              <RecipeList recipes={recipes} />
             </section>
           }
         ></Route>

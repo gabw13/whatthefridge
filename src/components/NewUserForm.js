@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { addDoc, collection } from "firebase/firestore";
-import { useNavigate } from "react-router-dom";
+import { addDoc, collection, doc } from "firebase/firestore";
+import { useNavigate, Link } from "react-router-dom";
 
 const NewUserForm = (props) => {
   const navigate = useNavigate();
@@ -16,15 +16,18 @@ const NewUserForm = (props) => {
   const onFormSubmit = (event) => {
     event.preventDefault();
     createUser();
-    props.setCurrentUser(newUser);
-    navigate(`/${newUser}`);
     setNewUser("");
   };
 
   // async api call to db: CREATE user
   const createUser = async () => {
-    await addDoc(collection(props.db, "users"), { username: newUser });
-    alert(`New user: ${newUser} created! ✨ `);
+    await addDoc(collection(props.db, "users"), {
+      username: newUser,
+    });
+    props.setCurrentUser(newUser);
+    alert(
+      `New user: ${newUser} created! ✨ Select your username from the user list below.`
+    );
     props.getUsers();
   };
 
