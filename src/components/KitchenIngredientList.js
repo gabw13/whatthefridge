@@ -1,6 +1,9 @@
-// import { useEffect } from "react";
+import React, { useContext } from "react";
+import IngredientsContext from "../kitchen/ingredientsContext";
 
 const KitchenIngredientList = (props) => {
+  const ingredients = useContext(IngredientsContext);
+
   // const checkKitchen = () => {
   //   if (props.ingredients.length === 0) {
   //     alert("kitchen is empty");
@@ -14,6 +17,7 @@ const KitchenIngredientList = (props) => {
       <button
         onClick={() => {
           props.getIngredients();
+          console.log(ingredients.value);
           // checkKitchen();
         }}
       >
@@ -27,7 +31,7 @@ const KitchenIngredientList = (props) => {
         delete user
       </button>
       {/* <h3>here's your kitchen: </h3> */}
-      {props.ingredients?.map((ingredient) => {
+      {ingredients.value?.map((ingredient) => {
         return (
           <section>
             <li key={ingredient.id}>

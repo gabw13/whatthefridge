@@ -7,6 +7,7 @@ import KitchenIngredientList from "./components/KitchenIngredientList";
 import RecipeList from "./components/RecipeList";
 import AddIngredientForm from "./components/AddIngredientForm";
 import { useState, useEffect } from "react";
+import IngredientsContext from "./kitchen/ingredientsContext";
 import { db } from "./firebase.config";
 import {
   collection,
@@ -25,6 +26,7 @@ function App() {
   const [users, setUsers] = useState([]);
   const [currentUser, setCurrentUser] = useState([]);
 
+  // ingredients state is managed by ingredientsContext now!
   const [ingredients, setIngredients] = useState(["nothing here!"]);
 
   const [recipes, setRecipes] = useState([]);
@@ -168,26 +170,27 @@ function App() {
           path=":id"
           element={
             <section className="user-kitchen-page">
-              <KitchenIngredientList
-                db={db}
-                ingredients={ingredients}
-                increaseIngredients={increaseIngredients}
-                decreaseIngredients={decreaseIngredients}
-                getIngredients={getIngredients}
-                getRecipes={getRecipes}
-                deleteIngredient={deleteIngredient}
-                usersCollection={usersCollection}
-                currentUser={currentUser}
-                handleUserChange={handleUserChange}
-                deleteUser={deleteUser}
-              />
-              <br></br>
-              <AddIngredientForm
-                getIngredients={getIngredients}
-                currentUser={currentUser}
-              />
-              <br></br>
-              <RecipeList recipes={recipes} />
+              <IngredientsContext.Provider value={{ value: ingredients }}>
+                <KitchenIngredientList
+                  db={db}
+                  increaseIngredients={increaseIngredients}
+                  decreaseIngredients={decreaseIngredients}
+                  getIngredients={getIngredients}
+                  getRecipes={getRecipes}
+                  deleteIngredient={deleteIngredient}
+                  usersCollection={usersCollection}
+                  currentUser={currentUser}
+                  handleUserChange={handleUserChange}
+                  deleteUser={deleteUser}
+                />
+                <br></br>
+                <AddIngredientForm
+                  getIngredients={getIngredients}
+                  currentUser={currentUser}
+                />
+                <br></br>
+                <RecipeList recipes={recipes} />
+              </IngredientsContext.Provider>
             </section>
           }
         ></Route>
