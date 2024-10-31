@@ -1,7 +1,7 @@
 # What the Fridge
 
 ## About
-What the Fridge was created by Gaby Webb as a Capstone project for Ada Developers Academy, Cohort 17. It was made with ReactJS, Google Firebase, and EdamamAPI. This app aims to help users reduce food waste and try new recipes.
+What the Fridge was created as a Capstone project at Ada Developers Academy, Cohort 17. It was made with ReactJS, Google Firebase, and EdamamAPI. This app aims to help users reduce food waste and try new recipes.
 
 ## Current Features
 

@@ -197,7 +197,7 @@ function App() {
       </Routes>
 
       <footer className="App-footer">
-        <p>&copy; 2022 Gaby Webb </p>
+        <p>&copy; 2024 Gabriela Bruzual </p>
       </footer>
     </section>
   );
@@ -246,13 +246,13 @@ function About() {
       <main>
         <h1>about</h1>
         <p>
-          What the Fridge was made in August 2022 by Gaby Webb with ReactJS +
-          Google Firebase + EdamamAPI + &hearts;
+          What the Fridge was made by Gabriela Bruzual in August 2022 using
+          ReactJS + Google Firebase + EdamamAPI + coffee + &hearts;
         </p>
         <h2>contact</h2>
-        <a href="mailto:gabw813@gmail.com">email</a>
+        <a href="mailto:gaby.the.dev@gmail.com">email</a>
         <br></br>
-        <a href="https://www.linkedin.com/in/gabriela-webb">linkedIn</a>
+        <a href="https://www.linkedin.com/in/gabriela-bruzual">linkedIn</a>
         <br></br>
         <a href="https://github.com/gabw13">github</a>
       </main>
